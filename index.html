@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b3558" />
+  <title>CPD Certificate Generator | PM SHRI KV Dongargarh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="assets/pmshri-logo.png" alt="PM SHRI logo" class="brand-logo" />
+      <div>
+        <div class="brand-title">CPD Certificate Generator</div>
+        <div class="brand-subtitle">Bilingual CPD certificate generator</div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button class="ghost-btn" id="resetBtn" type="button">Reset</button>
+      <button class="primary-btn" id="downloadTopBtn" type="button">Download PDF</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="intro">
+      <div>
+        <span class="eyebrow">OFFICIAL CPD WORKFLOW</span>
+        <h1>Create a professional bilingual certificate in seconds.</h1>
+        <p>Enter the institution and CPD details, upload the Principal signature, and preview the certificate live.</p>
+      </div>
+      <div class="status-pill"><span class="dot"></span> Ready to generate</div>
+    </section>
+
+    <div class="workspace">
+      <section class="panel form-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Certificate details</h2>
+            <p>Fields marked <span class="required">*</span> are required.</p>
+          </div>
+          <span class="step-badge">1 / 1</span>
+        </div>
+
+        <form id="certificateForm" novalidate>
+          <div class="section-label">Institution</div>
+          <div class="field-grid two">
+            <label class="field">
+              <span>School / Institution Name <b>*</b></span>
+              <input id="schoolName" name="schoolName" required value="PM SHRI Kendriya Vidyalaya Dongargarh" placeholder="e.g. PM SHRI Kendriya Vidyalaya Dongargarh" />
+            </label>
+            <label class="field">
+              <span>Regional Office</span>
+              <input id="regionalOffice" name="regionalOffice" value="Raipur" placeholder="e.g. Raipur" />
+            </label>
+          </div>
+
+          <div class="section-label">Participant</div>
+          <div class="field-grid two">
+            <label class="field">
+              <span>Name in English <b>*</b></span>
+              <input id="name" name="name" required placeholder="e.g. Amit Yerpude" />
+            </label>
+            <label class="field hindi-field">
+              <span>नाम हिंदी में <b>*</b></span>
+              <input id="hname" name="hname" required placeholder="उदा. अमित येरपुडे" />
+            </label>
+            <label class="field">
+              <span>Post / Designation in English <b>*</b></span>
+              <input id="post" name="post" required placeholder="e.g. PGT Computer Science" />
+            </label>
+            <label class="field hindi-field">
+              <span>पदनाम (विषय) हिंदी में <b>*</b></span>
+              <input id="hpost" name="hpost" required placeholder="उदा. पीजीटी कंप्यूटर साइंस" />
+            </label>
+          </div>
+
+          <div class="section-label">Training / workshop</div>
+          <div class="field-grid two">
+            <label class="field">
+              <span>Topic of training in English <b>*</b></span>
+              <textarea id="training" name="training" required rows="2" placeholder="e.g. Competency Based Assessment"></textarea>
+            </label>
+            <label class="field hindi-field">
+              <span>कार्यशाला का विषय <b>*</b></span>
+              <textarea id="htraining" name="htraining" required rows="2" placeholder="कार्यशाला का विषय"></textarea>
+            </label>
+            <label class="field">
+              <span>From date <b>*</b></span>
+              <input id="fromdate" name="fromdate" type="date" required />
+            </label>
+            <label class="field">
+              <span>To date <b>*</b></span>
+              <input id="todate" name="todate" type="date" required />
+            </label>
+          </div>
+
+          <div class="section-label">Participation</div>
+          <div class="field-grid two">
+            <fieldset class="choice-card">
+              <legend>Attended as <b>*</b></legend>
+              <label class="radio"><input type="radio" name="role" value="Participant" checked /><span>Participant</span></label>
+              <label class="radio"><input type="radio" name="role" value="Resource Person" /><span>Resource Person</span></label>
+            </fieldset>
+            <fieldset class="choice-card hindi-field">
+              <legend>के रूप में भाग लिया <b>*</b></legend>
+              <label class="radio"><input type="radio" name="hrole" value="प्रतिभागी" checked /><span>प्रतिभागी</span></label>
+              <label class="radio"><input type="radio" name="hrole" value="संसाधक" /><span>संसाधक</span></label>
+            </fieldset>
+            <label class="field compact-number">
+              <span>Total hours of training <b>*</b></span>
+              <input id="hours" name="hours" type="number" min="1" step="0.5" required placeholder="e.g. 6" />
+            </label>
+            <label class="field">
+              <span>Certificate year</span>
+              <input id="year" name="year" type="number" min="2000" max="2100" value="2026" />
+            </label>
+          </div>
+
+          <div class="section-label">Principal signature</div>
+          <div class="signature-upload-card">
+            <div>
+              <strong>Upload signature image</strong>
+              <small>PNG/JPG recommended. The image stays in your browser and is used for the preview/PDF.</small>
+            </div>
+            <div class="signature-upload-actions">
+              <label class="upload-btn" for="signatureUpload">Choose signature</label>
+              <input id="signatureUpload" type="file" accept="image/png,image/jpeg,image/webp" hidden />
+              <button class="text-btn danger-text" type="button" id="removeSignatureBtn">Remove</button>
+            </div>
+            <div class="upload-status" id="signatureStatus">Using the default Principal signature.</div>
+          </div>
+
+          <div class="section-label optional-label">Contact details <span>optional</span></div>
+          <div class="field-grid two">
+            <label class="field">
+              <span>Email</span>
+              <input id="email" type="email" placeholder="name@example.com" />
+            </label>
+            <label class="field">
+              <span>Email ID</span>
+              <input id="emailId" type="email" placeholder="name@example.com" />
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button class="secondary-btn" type="button" id="previewBtn">Update preview</button>
+            <button class="primary-btn wide" type="button" id="downloadBtn">Generate &amp; Download PDF</button>
+          </div>
+          <p class="validation-message" id="validationMessage" role="alert"></p>
+        </form>
+      </section>
+
+      <section class="panel preview-panel">
+        <div class="panel-heading preview-heading">
+          <div>
+            <h2>Live certificate</h2>
+            <p>The certificate updates as you type.</p>
+          </div>
+          <span class="format-badge">4:3 Certificate</span>
+        </div>
+
+        <div class="preview-stage">
+          <div class="certificate" id="certificate">
+            <img src="assets/certificate-border.png" class="cert-border" alt="" />
+            <img src="assets/pmshri-logo.png" class="cert-pmshri" alt="" />
+            <img src="assets/kvs-logo.png" class="cert-kvs" alt="" />
+            <div class="cert-heading-text"><div id="outSchoolName">PM SHRI Kendriya Vidyalaya Dongargarh</div><span id="outRegionalOffice">Regional Office: Raipur</span></div>
+            <div class="cert-title">प्रमाण-पत्र / Certificate</div>
+            <div class="cert-year">वर्ष / Year: <span id="outYear">2026</span></div>
+            <div class="watermark">केंद्रीय विद्यालय संगठन</div>
+            <div class="cert-body">
+              <p class="hindi-line">प्रमाणित किया जाता है कि <strong id="outHName">[नाम]</strong>, पदनाम: <strong id="outHPost">[पदनाम]</strong>, <strong id="outHSchoolName">[विद्यालय का नाम]</strong>, क्षेत्रीय कार्यालय: <strong id="outHRegionalOffice">[क्षेत्रीय कार्यालय]</strong> ने दिनांक <strong id="outHFrom">[दिनांक]</strong> से <strong id="outHTo">[दिनांक]</strong> तक पीएम श्री केंद्रीय विद्यालय डोंगरगढ़ में मुख्याभिमुख रूप में आयोजित “<strong id="outHTraining">[कार्यशाला का विषय]</strong>” (कार्यशाला) में <strong id="outHHours">[घंटे]</strong> घंटे हेतु <strong id="outHRole">प्रतिभागी</strong> के रूप में प्रतिभागिता की।</p>
+              <p class="english-line">This is to certify that <strong id="outName">[Name]</strong>, Designation: <strong id="outPost">[Designation]</strong> of <strong id="outSchoolNameEn">PM Shri Kendriya Vidyalaya Dongargarh</strong>, Regional Office: <strong id="outRegionalOfficeEn">Raipur</strong> has attended “<strong id="outTraining">[Training / Workshop]</strong>” (Workshop) from <strong id="outFrom">[Date]</strong> to <strong id="outTo">[Date]</strong> at <strong id="outSchoolNameEn2">PM Shri Kendriya Vidyalaya Dongargarh</strong> in Offline Mode for <strong id="outHours">[Hours]</strong> hours as a <strong id="outRole">Participant</strong>.</p>
+            </div>
+            <div class="principal-block">
+              <img id="principalSignature" src="assets/principal-signature.png" alt="Principal signature" />
+              <div>प्राचार्य/<b>Principal</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="preview-footer">
+          <span>Tip: Use the browser's print dialog if you need a physical copy.</span>
+          <button class="text-btn" type="button" id="printBtn">Print certificate</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span>CPD Certificate Generator</span>
+    <span>Designed for PM SHRI KV Dongargarh</span>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="script.js"></script>
+</body>
+</html>
