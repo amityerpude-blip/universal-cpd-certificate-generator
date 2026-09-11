@@ -8,10 +8,7 @@
 </head>
 <body>
   <header class="topbar">
-    <div class="brand">
-      <img src="assets/pmshri-logo.png" alt="PM SHRI logo" class="brand-logo" />
-      <div><div class="brand-title">CPD Certificate Generator</div><div class="brand-subtitle">Universal bilingual certificate generator</div></div>
-    </div>
+    <div class="brand"><img src="assets/pmshri-logo.png" alt="PM SHRI logo" class="brand-logo" /><div><div class="brand-title">CPD Certificate Generator</div><div class="brand-subtitle">Universal bilingual certificate generator</div></div></div>
     <div class="top-actions"><button class="ghost-btn" id="resetBtn" type="button">Reset</button><button class="primary-btn" id="downloadTopBtn" type="button">Download PDF</button></div>
   </header>
   <main class="app-shell">
@@ -20,68 +17,42 @@
       <section class="panel form-panel">
         <div class="panel-heading"><div><h2>Certificate details</h2><p>Fields marked <span class="required">*</span> are required.</p></div><span class="step-badge">1 / 1</span></div>
         <form id="certificateForm" novalidate>
-          <div class="section-label">Institution</div>
-          <div class="field-grid two">
+          <div class="section-label">Institution</div><div class="field-grid two">
             <label class="field"><span>School / Institution Name (English) <b>*</b></span><input id="schoolName" required placeholder="e.g. PM SHRI Kendriya Vidyalaya Dongargarh" /></label>
             <label class="field hindi-field"><span>विद्यालय / संस्था का नाम (हिंदी) <b>*</b></span><input id="hschoolName" required placeholder="उदा. पीएम श्री केंद्रीय विद्यालय डोंगरगढ़" /></label>
-            <label class="field"><span>Regional Office (English)</span><input id="regionalOffice" placeholder="e.g. Raipur" /></label>
-            <label class="field hindi-field"><span>क्षेत्रीय कार्यालय (हिंदी)</span><input id="hregionalOffice" placeholder="उदा. रायपुर" /></label>
+            <label class="field"><span>Regional Office (English)</span><input id="regionalOffice" placeholder="e.g. Raipur" /></label><label class="field hindi-field"><span>क्षेत्रीय कार्यालय (हिंदी)</span><input id="hregionalOffice" placeholder="उदा. रायपुर" /></label>
           </div>
-          <div class="section-label">Participant</div>
-          <div class="field-grid two">
-            <label class="field"><span>Name in English <b>*</b></span><input id="name" required placeholder="e.g. Amit Yerpude" /></label>
-            <label class="field hindi-field"><span>नाम हिंदी में <b>*</b></span><input id="hname" required placeholder="उदा. अमित येरपुडे" /></label>
-            <label class="field"><span>Post / Designation in English <b>*</b></span><input id="post" required placeholder="e.g. PGT Computer Science" /></label>
-            <label class="field hindi-field"><span>पदनाम (विषय) हिंदी में <b>*</b></span><input id="hpost" required placeholder="उदा. पीजीटी कंप्यूटर साइंस" /></label>
+          <div class="section-label">Participant</div><div class="field-grid two">
+            <label class="field"><span>Name in English <b>*</b></span><input id="name" required placeholder="e.g. Amit Yerpude" /></label><label class="field hindi-field"><span>नाम हिंदी में <b>*</b></span><input id="hname" required placeholder="उदा. अमित येरपुडे" /></label>
+            <label class="field"><span>Post / Designation in English <b>*</b></span><input id="post" required placeholder="e.g. PGT Computer Science" /></label><label class="field hindi-field"><span>पदनाम (विषय) हिंदी में <b>*</b></span><input id="hpost" required placeholder="उदा. पीजीटी कंप्यूटर साइंस" /></label>
           </div>
-          <div class="section-label">Training / workshop</div>
-          <div class="field-grid two">
-            <label class="field"><span>Topic of training in English <b>*</b></span><textarea id="training" required rows="2" placeholder="e.g. Competency Based Assessment"></textarea></label>
-            <label class="field hindi-field"><span>कार्यशाला का विषय <b>*</b></span><textarea id="htraining" required rows="2" placeholder="कार्यशाला का विषय"></textarea></label>
-            <label class="field"><span>From date <b>*</b></span><input id="fromdate" type="date" required /></label>
-            <label class="field"><span>To date <b>*</b></span><input id="todate" type="date" required /></label>
-            <label class="field"><span>Venue / Event Location (English) <b>*</b></span><input id="venue" required placeholder="e.g. PM SHRI KV Dongargarh" /></label>
-            <label class="field hindi-field"><span>आयोजन स्थल (हिंदी) <b>*</b></span><input id="hvenue" required placeholder="उदा. पीएम श्री केन्द्रीय विद्यालय डोंगरगढ़" /></label>
+          <div class="section-label">Training / workshop</div><div class="field-grid two">
+            <label class="field"><span>Topic of training in English <b>*</b></span><textarea id="training" required rows="2" placeholder="e.g. Competency Based Assessment"></textarea></label><label class="field hindi-field"><span>कार्यशाला का विषय <b>*</b></span><textarea id="htraining" required rows="2" placeholder="कार्यशाला का विषय"></textarea></label>
+            <label class="field"><span>From date <b>*</b></span><input id="fromdate" type="date" required /></label><label class="field"><span>To date <b>*</b></span><input id="todate" type="date" required /></label>
+            <label class="field"><span>Venue / Event Location (English) <b>*</b></span><input id="venue" required placeholder="e.g. PM SHRI KV Dongargarh" /></label><label class="field hindi-field"><span>आयोजन स्थल (हिंदी) <b>*</b></span><input id="hvenue" required placeholder="उदा. पीएम श्री केन्द्रीय विद्यालय डोंगरगढ़" /></label>
           </div>
-          <div class="section-label">Participation</div>
-          <div class="field-grid two">
+          <div class="section-label">Participation</div><div class="field-grid two">
             <fieldset class="choice-card"><legend>Attended as <b>*</b></legend><label class="radio"><input type="radio" name="role" value="Participant" checked /><span>Participant</span></label><label class="radio"><input type="radio" name="role" value="Resource Person" /><span>Resource Person</span></label></fieldset>
             <fieldset class="choice-card hindi-field"><legend>के रूप में भाग लिया <b>*</b></legend><label class="radio"><input type="radio" name="hrole" value="प्रतिभागी" checked /><span>प्रतिभागी</span></label><label class="radio"><input type="radio" name="hrole" value="संसाधक" /><span>संसाधक</span></label></fieldset>
-            <label class="field"><span>Total hours of training <b>*</b></span><input id="hours" type="number" min="1" step="0.5" required placeholder="e.g. 6" /></label>
-            <label class="field"><span>Certificate year</span><input id="year" type="number" min="2000" max="2100" value="2026" /></label>
+            <label class="field"><span>Total hours of training <b>*</b></span><input id="hours" type="number" min="1" step="0.5" required placeholder="e.g. 6" /></label><label class="field"><span>Certificate year</span><input id="year" type="number" min="2000" max="2100" value="2026" /></label>
           </div>
-          <div class="section-label">Principal signature</div>
-          <div class="signature-upload-card"><div><strong>Upload signature image</strong><small>PNG/JPG/WEBP. The image stays in your browser.</small></div><div class="signature-upload-actions"><label class="upload-btn" for="signatureUpload">Choose signature</label><input id="signatureUpload" type="file" accept="image/png,image/jpeg,image/webp" hidden /><button class="text-btn danger-text" type="button" id="removeSignatureBtn">Remove</button></div><div class="upload-status" id="signatureStatus">No signature uploaded.</div></div>
-          <div class="section-label">Certificate signature option</div>
-          <fieldset class="choice-card signature-choice"><legend>Generate certificate with Principal signature?</legend><label class="radio"><input type="radio" name="signatureMode" value="with" checked /><span>With Principal signature</span></label><label class="radio"><input type="radio" name="signatureMode" value="without" /><span>Without Principal signature</span></label></fieldset>
-          <div class="bulk-card"><div><strong>Bulk certificate generation</strong><small>Upload an Excel file containing one participant per row. All certificates will be generated together as a ZIP.</small></div><div class="bulk-actions"><label class="upload-btn" for="bulkExcelUpload">Choose Excel file</label><input id="bulkExcelUpload" type="file" accept=".xlsx,.xls,.csv" hidden /><button class="secondary-btn" type="button" id="downloadTemplateBtn">Download Excel template</button></div><div class="upload-status" id="bulkStatus">No Excel file selected.</div><div class="bulk-progress" id="bulkProgress"></div></div>
-          <div class="section-label optional-label">Contact details <span>optional</span></div>
-          <div class="field-grid two"><label class="field"><span>Email</span><input id="email" type="email" placeholder="name@example.com" /></label><label class="field"><span>Email ID</span><input id="emailId" type="email" placeholder="name@example.com" /></label></div>
-          <div class="form-actions"><button class="secondary-btn" type="button" id="previewBtn">Update preview</button><button class="primary-btn wide" type="button" id="downloadBtn">Generate &amp; Download PDF</button></div>
-          <p class="validation-message" id="validationMessage" role="alert"></p>
+          <div class="section-label">Principal signature</div><div class="signature-upload-card"><div><strong>Upload signature image</strong><small>PNG/JPG/WEBP. The image stays in your browser.</small></div><div class="signature-upload-actions"><label class="upload-btn" for="signatureUpload">Choose signature</label><input id="signatureUpload" type="file" accept="image/png,image/jpeg,image/webp" hidden /><button class="text-btn danger-text" type="button" id="removeSignatureBtn">Remove</button></div><div class="upload-status" id="signatureStatus">No signature uploaded.</div></div>
+          <div class="section-label">Certificate signature option</div><fieldset class="choice-card signature-choice"><legend>Generate certificate with Principal signature?</legend><label class="radio"><input type="radio" name="signatureMode" value="with" checked /><span>With Principal signature</span></label><label class="radio"><input type="radio" name="signatureMode" value="without" /><span>Without Principal signature</span></label></fieldset>
+          <div class="bulk-card"><div><strong>Bulk certificate generation</strong><small>Click the button and select an Excel file containing one participant per row. All certificates will be generated together as a ZIP. The signature option above applies to every certificate.</small></div><div class="bulk-actions"><label class="upload-btn" for="bulkExcelUpload">Bulk Generate from Excel</label><input id="bulkExcelUpload" type="file" accept=".xlsx,.xls,.csv" hidden /><button class="secondary-btn" type="button" id="downloadTemplateBtn">Download Excel template</button></div><div class="upload-status" id="bulkStatus">No Excel file selected.</div><div class="bulk-progress" id="bulkProgress"></div></div>
+          <div class="section-label optional-label">Contact details <span>optional</span></div><div class="field-grid two"><label class="field"><span>Email</span><input id="email" type="email" placeholder="name@example.com" /></label><label class="field"><span>Email ID</span><input id="emailId" type="email" placeholder="name@example.com" /></label></div>
+          <div class="form-actions"><button class="secondary-btn" type="button" id="previewBtn">Update preview</button><button class="primary-btn wide" type="button" id="downloadBtn">Generate &amp; Download PDF</button></div><p class="validation-message" id="validationMessage" role="alert"></p>
         </form>
       </section>
-      <section class="panel preview-panel">
-        <div class="panel-heading preview-heading"><div><h2>Live certificate</h2><p>The certificate updates as you type.</p></div><span class="format-badge">4:3 Certificate</span></div>
-        <div class="preview-stage"><div class="certificate" id="certificate">
-          <img src="assets/certificate-border.png" class="cert-border" alt="" /><img src="assets/pmshri-logo.png" class="cert-pmshri" alt="" /><img src="assets/kvs-logo.png" class="cert-kvs" alt="" />
-          <div class="cert-heading-text"><div id="outSchoolName">[School / Institution Name]</div><span id="outRegionalOffice">Regional Office: [Regional Office]</span></div>
-          <div class="cert-title">प्रमाण-पत्र / Certificate</div><div class="cert-year">वर्ष / Year: <span id="outYear">2026</span></div><div class="watermark">केंद्रीय विद्यालय संगठन</div>
-          <div class="cert-body">
-            <p class="hindi-line">प्रमाणित किया जाता है कि <strong id="outHName">[नाम]</strong>, पदनाम: <strong id="outHPost">[पदनाम]</strong>, <strong id="outHSchoolName">[विद्यालय का नाम]</strong>, क्षेत्रीय कार्यालय: <strong id="outHRegionalOffice">[क्षेत्रीय कार्यालय]</strong> ने दिनांक <strong id="outHFrom">[दिनांक]</strong> से <strong id="outHTo">[दिनांक]</strong> तक <strong id="outHVenue">[आयोजन स्थल]</strong> में आयोजित “<strong id="outHTraining">[कार्यशाला का विषय]</strong>” (कार्यशाला) में <strong id="outHHours">[घंटे]</strong> घंटे हेतु <strong id="outHRole">प्रतिभागी</strong> के रूप में प्रतिभागिता की।</p>
-            <p class="english-line">This is to certify that <strong id="outName">[Name]</strong>, Designation: <strong id="outPost">[Designation]</strong> of <strong id="outSchoolNameEn">[School / Institution Name]</strong>, Regional Office: <strong id="outRegionalOfficeEn">[Regional Office]</strong> has attended “<strong id="outTraining">[Training / Workshop]</strong>” (Workshop) from <strong id="outFrom">[Date]</strong> to <strong id="outTo">[Date]</strong> at <strong id="outVenue">[Venue / Event Location]</strong> for <strong id="outHoursEn">[Hours]</strong> hours as a <strong id="outRole">Participant</strong>.</p>
-          </div>
+      <section class="panel preview-panel"><div class="panel-heading preview-heading"><div><h2>Live certificate</h2><p>The certificate updates as you type.</p></div><span class="format-badge">4:3 Certificate</span></div>
+        <div class="preview-stage"><div class="certificate" id="certificate"><img src="assets/certificate-border.png" class="cert-border" alt="" /><img src="assets/pmshri-logo.png" class="cert-pmshri" alt="" /><img src="assets/kvs-logo.png" class="cert-kvs" alt="" />
+          <div class="cert-heading-text"><div id="outSchoolName">[School / Institution Name]</div><span id="outRegionalOffice">Regional Office: [Regional Office]</span></div><div class="cert-title">प्रमाण-पत्र / Certificate</div><div class="cert-year">वर्ष / Year: <span id="outYear">2026</span></div><div class="watermark">केंद्रीय विद्यालय संगठन</div>
+          <div class="cert-body"><p class="hindi-line">प्रमाणित किया जाता है कि <strong id="outHName">[नाम]</strong>, पदनाम: <strong id="outHPost">[पदनाम]</strong>, <strong id="outHSchoolName">[विद्यालय का नाम]</strong>, क्षेत्रीय कार्यालय: <strong id="outHRegionalOffice">[क्षेत्रीय कार्यालय]</strong> ने दिनांक <strong id="outHFrom">[दिनांक]</strong> से <strong id="outHTo">[दिनांक]</strong> तक <strong id="outHVenue">[आयोजन स्थल]</strong> में आयोजित “<strong id="outHTraining">[कार्यशाला का विषय]</strong>” (कार्यशाला) में <strong id="outHHours">[घंटे]</strong> घंटे हेतु <strong id="outHRole">प्रतिभागी</strong> के रूप में प्रतिभागिता की।</p><p class="english-line">This is to certify that <strong id="outName">[Name]</strong>, Designation: <strong id="outPost">[Designation]</strong> of <strong id="outSchoolNameEn">[School / Institution Name]</strong>, Regional Office: <strong id="outRegionalOfficeEn">[Regional Office]</strong> has attended “<strong id="outTraining">[Training / Workshop]</strong>” (Workshop) from <strong id="outFrom">[Date]</strong> to <strong id="outTo">[Date]</strong> at <strong id="outVenue">[Venue / Event Location]</strong> for <strong id="outHoursEn">[Hours]</strong> hours as a <strong id="outRole">Participant</strong>.</p></div>
           <div class="principal-block" id="principalBlock"><img id="principalSignature" alt="Principal signature" /><div>प्राचार्य/<b>Principal</b></div></div>
-        </div></div>
-        <div class="preview-footer"><span>Tip: Use the browser's print dialog if you need a physical copy.</span><button class="text-btn" type="button" id="printBtn">Print certificate</button></div>
+        </div></div><div class="preview-footer"><span>Tip: Use the browser's print dialog if you need a physical copy.</span><button class="text-btn" type="button" id="printBtn">Print certificate</button></div>
       </section>
     </div>
   </main>
   <footer class="footer"><span>Universal CPD Certificate Generator</span><span>Bilingual institution and venue fields • Bulk Excel generation</span></footer>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  <script src="script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script><script src="script.js"></script>
 </body>
 </html>
