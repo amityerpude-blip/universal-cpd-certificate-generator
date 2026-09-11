@@ -15,7 +15,7 @@
     <div class="top-actions"><button class="ghost-btn" id="resetBtn" type="button">Reset</button><button class="primary-btn" id="downloadTopBtn" type="button">Download PDF</button></div>
   </header>
   <main class="app-shell">
-    <section class="intro"><div><span class="eyebrow">OFFICIAL CPD WORKFLOW</span><h1>Create a professional bilingual certificate in seconds.</h1><p>Enter institution and CPD details, upload the Principal signature, and preview the certificate live.</p></div><div class="status-pill"><span class="dot"></span> Ready to generate</div></section>
+    <section class="intro"><div><span class="eyebrow">OFFICIAL CPD WORKFLOW</span><h1>Create a professional bilingual certificate in seconds.</h1><p>Enter institution and CPD details, upload the Principal signature, preview the certificate live, or generate certificates in bulk from Excel.</p></div><div class="status-pill"><span class="dot"></span> Ready to generate</div></section>
     <div class="workspace">
       <section class="panel form-panel">
         <div class="panel-heading"><div><h2>Certificate details</h2><p>Fields marked <span class="required">*</span> are required.</p></div><span class="step-badge">1 / 1</span></div>
@@ -52,6 +52,9 @@
           </div>
           <div class="section-label">Principal signature</div>
           <div class="signature-upload-card"><div><strong>Upload signature image</strong><small>PNG/JPG/WEBP. The image stays in your browser.</small></div><div class="signature-upload-actions"><label class="upload-btn" for="signatureUpload">Choose signature</label><input id="signatureUpload" type="file" accept="image/png,image/jpeg,image/webp" hidden /><button class="text-btn danger-text" type="button" id="removeSignatureBtn">Remove</button></div><div class="upload-status" id="signatureStatus">No signature uploaded.</div></div>
+          <div class="section-label">Certificate signature option</div>
+          <fieldset class="choice-card signature-choice"><legend>Generate certificate with Principal signature?</legend><label class="radio"><input type="radio" name="signatureMode" value="with" checked /><span>With Principal signature</span></label><label class="radio"><input type="radio" name="signatureMode" value="without" /><span>Without Principal signature</span></label></fieldset>
+          <div class="bulk-card"><div><strong>Bulk certificate generation</strong><small>Upload an Excel file containing one participant per row. All certificates will be generated together as a ZIP.</small></div><div class="bulk-actions"><label class="upload-btn" for="bulkExcelUpload">Choose Excel file</label><input id="bulkExcelUpload" type="file" accept=".xlsx,.xls,.csv" hidden /><button class="secondary-btn" type="button" id="downloadTemplateBtn">Download Excel template</button></div><div class="upload-status" id="bulkStatus">No Excel file selected.</div><div class="bulk-progress" id="bulkProgress"></div></div>
           <div class="section-label optional-label">Contact details <span>optional</span></div>
           <div class="field-grid two"><label class="field"><span>Email</span><input id="email" type="email" placeholder="name@example.com" /></label><label class="field"><span>Email ID</span><input id="emailId" type="email" placeholder="name@example.com" /></label></div>
           <div class="form-actions"><button class="secondary-btn" type="button" id="previewBtn">Update preview</button><button class="primary-btn wide" type="button" id="downloadBtn">Generate &amp; Download PDF</button></div>
@@ -68,13 +71,17 @@
             <p class="hindi-line">प्रमाणित किया जाता है कि <strong id="outHName">[नाम]</strong>, पदनाम: <strong id="outHPost">[पदनाम]</strong>, <strong id="outHSchoolName">[विद्यालय का नाम]</strong>, क्षेत्रीय कार्यालय: <strong id="outHRegionalOffice">[क्षेत्रीय कार्यालय]</strong> ने दिनांक <strong id="outHFrom">[दिनांक]</strong> से <strong id="outHTo">[दिनांक]</strong> तक <strong id="outHVenue">[आयोजन स्थल]</strong> में आयोजित “<strong id="outHTraining">[कार्यशाला का विषय]</strong>” (कार्यशाला) में <strong id="outHHours">[घंटे]</strong> घंटे हेतु <strong id="outHRole">प्रतिभागी</strong> के रूप में प्रतिभागिता की।</p>
             <p class="english-line">This is to certify that <strong id="outName">[Name]</strong>, Designation: <strong id="outPost">[Designation]</strong> of <strong id="outSchoolNameEn">[School / Institution Name]</strong>, Regional Office: <strong id="outRegionalOfficeEn">[Regional Office]</strong> has attended “<strong id="outTraining">[Training / Workshop]</strong>” (Workshop) from <strong id="outFrom">[Date]</strong> to <strong id="outTo">[Date]</strong> at <strong id="outVenue">[Venue / Event Location]</strong> for <strong id="outHoursEn">[Hours]</strong> hours as a <strong id="outRole">Participant</strong>.</p>
           </div>
-          <div class="principal-block"><img id="principalSignature" alt="Principal signature" /><div>प्राचार्य/<b>Principal</b></div></div>
+          <div class="principal-block" id="principalBlock"><img id="principalSignature" alt="Principal signature" /><div>प्राचार्य/<b>Principal</b></div></div>
         </div></div>
         <div class="preview-footer"><span>Tip: Use the browser's print dialog if you need a physical copy.</span><button class="text-btn" type="button" id="printBtn">Print certificate</button></div>
       </section>
     </div>
   </main>
-  <footer class="footer"><span>Universal CPD Certificate Generator</span><span>Bilingual institution and venue fields</span></footer>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><script src="script.js"></script>
+  <footer class="footer"><span>Universal CPD Certificate Generator</span><span>Bilingual institution and venue fields • Bulk Excel generation</span></footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
