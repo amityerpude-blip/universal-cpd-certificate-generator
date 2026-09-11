@@ -75,8 +75,9 @@ h1 { margin: 8px 0 8px; color: var(--navy); font-family: "Playfair Display", ser
 .cert-body strong { font-weight: 700; color: #143957; }
 .hindi-line { font-family: "Noto Sans Devanagari", serif; }
 .english-line { font-family: Georgia, serif; }
-.principal-block { position: absolute; right: 9.4%; bottom: 7.5%; text-align: center; color: #0e3b64; z-index: 3; font-size: clamp(10px, 1.25vw, 15px); }
-.principal-block img { display: block; width: 135px; max-width: 16vw; height: auto; margin: 0 auto -3px; }
+.principal-block { position: absolute; right: 9.4%; bottom: 10.5%; text-align: center; color: #0e3b64; z-index: 3; font-size: clamp(10px, 1.25vw, 15px); min-width: 135px; }
+.principal-block img { display: block; width: 135px; max-width: 16vw; height: auto; margin: 0 auto 2px; }
+.principal-block div { white-space: nowrap; }
 .preview-footer { display: flex; justify-content: space-between; gap: 10px; padding: 12px 2px 0; color: var(--muted); font-size: 11px; }
 .footer { display: flex; justify-content: space-between; max-width: 1540px; margin: 0 auto; padding: 0 34px 26px; color: #8a9aaa; font-size: 11px; }
 @media (max-width: 1100px) {
