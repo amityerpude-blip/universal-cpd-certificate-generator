@@ -54,5 +54,16 @@
   </main>
   <footer class="footer"><span>Universal CPD Certificate Generator</span><span>Bilingual institution and venue fields • Bulk Excel generation</span></footer>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script><script src="script.js"></script>
+  <script>
+    // Keep the bilingual Principal label visible in both modes; only the signature image is optional.
+    function applySignatureVisibility() {
+      const showSignature = typeof signatureMode === 'function' && signatureMode() === 'with' && Boolean(window.signatureDataUrl || (typeof signatureDataUrl !== 'undefined' && signatureDataUrl));
+      const block = document.getElementById('principalBlock');
+      const image = document.getElementById('principalSignature');
+      if (block) block.style.display = 'block';
+      if (image) image.style.display = showSignature ? 'block' : 'none';
+    }
+    if (typeof updatePreview === 'function') updatePreview();
+  </script>
 </body>
 </html>
