@@ -189,7 +189,7 @@ function setSignature(src, label) {
   applySignatureVisibility();
 }
 
-$('signatureUpload').addEventListener('change', (event) => {
+$('signatureUpload').addEventListener('change', async (event) => {
   const file = event.target.files?.[0];
   if (!file) return;
   if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
