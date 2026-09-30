@@ -100,6 +100,86 @@ function validate() {
   return true;
 }
 
+async function normalizeSignatureImage(file) {
+  const dataUrl = await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
+  const image = await new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = dataUrl;
+  });
+
+  const sourceCanvas = document.createElement('canvas');
+  sourceCanvas.width = image.naturalWidth || image.width;
+  sourceCanvas.height = image.naturalHeight || image.height;
+  const sourceContext = sourceCanvas.getContext('2d', { willReadFrequently: true });
+  sourceContext.drawImage(image, 0, 0);
+  const imageData = sourceContext.getImageData(0, 0, sourceCanvas.width, sourceCanvas.height);
+  const pixels = imageData.data;
+
+  let minX = sourceCanvas.width;
+  let minY = sourceCanvas.height;
+  let maxX = -1;
+  let maxY = -1;
+
+  for (let y = 0; y < sourceCanvas.height; y += 1) {
+    for (let x = 0; x < sourceCanvas.width; x += 1) {
+      const index = (y * sourceCanvas.width + x) * 4;
+      const red = pixels[index];
+      const green = pixels[index + 1];
+      const blue = pixels[index + 2];
+      const alpha = pixels[index + 3];
+      const brightness = (red + green + blue) / 3;
+      const isWhiteBackground = alpha === 0 || (red > 242 && green > 242 && blue > 242);
+
+      if (isWhiteBackground) {
+        pixels[index + 3] = 0;
+      } else {
+        const darkness = Math.max(0, Math.min(1, (242 - brightness) / 190));
+        pixels[index + 3] = Math.round(alpha * Math.max(0.25, darkness));
+        minX = Math.min(minX, x);
+        minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x);
+        maxY = Math.max(maxY, y);
+      }
+    }
+  }
+
+  sourceContext.putImageData(imageData, 0, 0);
+
+  if (maxX < minX || maxY < minY) return dataUrl;
+
+  const padding = Math.max(4, Math.round(Math.min(sourceCanvas.width, sourceCanvas.height) * 0.02));
+  minX = Math.max(0, minX - padding);
+  minY = Math.max(0, minY - padding);
+  maxX = Math.min(sourceCanvas.width - 1, maxX + padding);
+  maxY = Math.min(sourceCanvas.height - 1, maxY + padding);
+
+  const cropWidth = maxX - minX + 1;
+  const cropHeight = maxY - minY + 1;
+  const maxOutputWidth = 600;
+  const maxOutputHeight = 200;
+  const scale = Math.min(1, maxOutputWidth / cropWidth, maxOutputHeight / cropHeight);
+  const outputCanvas = document.createElement('canvas');
+  outputCanvas.width = Math.max(1, Math.round(cropWidth * scale));
+  outputCanvas.height = Math.max(1, Math.round(cropHeight * scale));
+  const outputContext = outputCanvas.getContext('2d');
+  outputContext.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+  outputContext.drawImage(
+    sourceCanvas,
+    minX, minY, cropWidth, cropHeight,
+    0, 0, outputCanvas.width, outputCanvas.height
+  );
+
+  return outputCanvas.toDataURL('image/png');
+}
+
 function setSignature(src, label) {
   signatureDataUrl = src || '';
   const image = $('principalSignature');
@@ -117,9 +197,13 @@ $('signatureUpload').addEventListener('change', (event) => {
     $('signatureStatus').textContent = 'Please choose a PNG, JPG or WEBP image.';
     return;
   }
-  const reader = new FileReader();
-  reader.onload = () => setSignature(reader.result, `Uploaded: ${file.name}`);
-  reader.readAsDataURL(file);
+  try {
+    const normalized = await normalizeSignatureImage(file);
+    setSignature(normalized, `Uploaded and cleaned: ${file.name}`);
+  } catch (error) {
+    console.error(error);
+    $('signatureStatus').textContent = 'Could not process the signature image. Please try another file.';
+  }
 });
 
 $('removeSignatureBtn').addEventListener('click', () => {
