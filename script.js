@@ -136,13 +136,14 @@ async function normalizeSignatureImage(file) {
       const blue = pixels[index + 2];
       const alpha = pixels[index + 3];
       const brightness = (red + green + blue) / 3;
-      const isWhiteBackground = alpha === 0 || (red > 242 && green > 242 && blue > 242);
+      const isWhiteBackground = alpha === 0 || (red >= 245 && green >= 245 && blue >= 245);
 
       if (isWhiteBackground) {
         pixels[index + 3] = 0;
       } else {
-        const darkness = Math.max(0, Math.min(1, (242 - brightness) / 190));
-        pixels[index + 3] = Math.round(alpha * Math.max(0.25, darkness));
+        // Keep the original alpha fully intact so the uploaded signature does
+        // not become faint. Only remove the white paper/background.
+        pixels[index + 3] = alpha;
         minX = Math.min(minX, x);
         minY = Math.min(minY, y);
         maxX = Math.max(maxX, x);
@@ -236,7 +237,7 @@ async function certificateCanvas() {
 function createPdfFromCanvas(canvas) {
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF({ orientation: 'landscape', unit: 'in', format: [12, 9] });
-  pdf.addImage(canvas.toDataURL('image/jpeg', 0.97), 'JPEG', 0, 0, 12, 9, undefined, 'FAST');
+  pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 12, 9, undefined, 'FAST');
   return pdf;
 }
 
