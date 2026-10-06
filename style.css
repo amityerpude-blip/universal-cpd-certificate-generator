@@ -70,8 +70,8 @@ h1 { margin: 8px 0 8px; color: var(--navy); font-family: "Playfair Display", ser
 .cert-title { position: absolute; top: 21.1%; left: 0; width: 100%; text-align: center; color: #a65d10; font-family: "Noto Sans Devanagari", Georgia, serif; font-size: clamp(15px, 2.15vw, 26px); font-weight: 700; z-index: 2; }
 .cert-year { position: absolute; top: 26.5%; left: 0; width: 100%; text-align: center; color: #a65d10; font-family: "Noto Sans Devanagari", Georgia, serif; font-size: clamp(13px, 1.65vw, 21px); font-weight: 700; z-index: 2; }
 .watermark-logo { position: absolute; left: 50%; top: 53%; width: 30%; height: auto; transform: translate(-50%, -50%); opacity: .10; pointer-events: none; z-index: 1; }
-.cert-body { position: absolute; left: 6.5%; right: 6.5%; top: 34.5%; height: 43.5%; z-index: 2; font-size: clamp(10px, 1.32vw, 16px); line-height: 1.62; overflow: hidden; }
-.cert-body p { margin: 0 0 10px; text-align: justify; overflow-wrap: break-word; }
+.cert-body { position: absolute; left: 6.5%; right: 6.5%; top: 34.5%; height: 43.5%; z-index: 2; font-size: clamp(10px, 1.32vw, 16px); line-height: 1.52; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; }
+.cert-body p { margin: 0; text-align: justify; overflow-wrap: anywhere; word-break: normal; }
 .cert-body strong { font-weight: 700; color: #143957; }
 .hindi-line { font-family: "Noto Sans Devanagari", serif; }
 .english-line { font-family: Georgia, serif; }
@@ -80,34 +80,9 @@ h1 { margin: 8px 0 8px; color: var(--navy); font-family: "Playfair Display", ser
 .principal-block div { position: absolute; left: 0; right: 0; bottom: 0; white-space: nowrap; }
 .preview-footer { display: flex; justify-content: space-between; gap: 10px; padding: 12px 2px 0; color: var(--muted); font-size: 11px; }
 .footer { display: flex; justify-content: space-between; max-width: 1540px; margin: 0 auto; padding: 0 34px 26px; color: #8a9aaa; font-size: 11px; }
-@media (max-width: 1100px) {
-  .workspace { grid-template-columns: 1fr; }
-  .preview-panel { position: static; }
-  .certificate { width: 900px; }
-}
-@media (max-width: 720px) {
-  .topbar { padding: 0 15px; height: 68px; }
-  .brand-subtitle { display: none; }
-  .top-actions .ghost-btn { display: none; }
-  .app-shell { padding: 22px 14px; }
-  .intro { align-items: flex-start; flex-direction: column; }
-  .field-grid.two { grid-template-columns: 1fr; }
-  .form-panel, .preview-panel { padding: 16px; border-radius: 14px; }
-  .form-actions { flex-direction: column; }
-  .wide { width: 100%; }
-  .preview-stage { padding: 7px; }
-  .preview-footer { flex-direction: column; }
-  .footer { padding: 0 14px 20px; flex-direction: column; gap: 4px; }
-}
-@media print {
-  body { background: white; }
-  .topbar, .intro, .form-panel, .footer, .preview-heading, .preview-footer { display: none !important; }
-  .app-shell { padding: 0; max-width: none; }
-  .workspace { display: block; }
-  .preview-panel { border: 0; box-shadow: none; padding: 0; }
-  .preview-stage { padding: 0; background: white; border: 0; }
-  .certificate { width: 100vw; box-shadow: none; }
-}
+@media (max-width: 1100px) { .workspace { grid-template-columns: 1fr; } .preview-panel { position: static; } .certificate { width: 900px; } }
+@media (max-width: 720px) { .topbar { padding: 0 15px; height: 68px; } .brand-subtitle { display: none; } .top-actions .ghost-btn { display: none; } .app-shell { padding: 22px 14px; } .intro { align-items: flex-start; flex-direction: column; } .field-grid.two { grid-template-columns: 1fr; } .form-panel, .preview-panel { padding: 16px; border-radius: 14px; } .form-actions { flex-direction: column; } .wide { width: 100%; } .preview-stage { padding: 7px; } .preview-footer { flex-direction: column; } .footer { padding: 0 14px 20px; flex-direction: column; gap: 4px; } }
+@media print { body { background: white; } .topbar, .intro, .form-panel, .footer, .preview-heading, .preview-footer { display: none !important; } .app-shell { padding: 0; max-width: none; } .workspace { display: block; } .preview-panel { border: 0; box-shadow: none; padding: 0; } .preview-stage { padding: 0; background: white; border: 0; } .certificate { width: 100vw; box-shadow: none; } }
 .signature-upload-card, .bulk-card { border: 1px solid #d6e1e9; border-radius: 12px; padding: 13px; background: #fbfcfe; display: grid; gap: 9px; }
 .signature-upload-card strong, .bulk-card strong { display: block; color: var(--navy); font-size: 12px; }
 .signature-upload-card small, .bulk-card small { display: block; color: var(--muted); font-size: 10px; margin-top: 3px; line-height: 1.45; }
