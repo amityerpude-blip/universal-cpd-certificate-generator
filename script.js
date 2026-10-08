@@ -275,19 +275,32 @@ function cell(row, key, aliases = []) {
 }
 
 function excelDateToISO(value) {
-  if (value instanceof Date && !Number.isNaN(value.getTime())) return value.toISOString().slice(0, 10);
+  // Keep the Excel calendar date in local time. Using toISOString() can
+  // shift midnight to the previous day in time zones such as India (UTC+5:30).
+  if (value instanceof Date && !Number.isNaN(value.getTime())) {
+    return [
+      value.getFullYear(),
+      String(value.getMonth() + 1).padStart(2, '0'),
+      String(value.getDate()).padStart(2, '0')
+    ].join('-');
+  }
   if (typeof value === 'number' && window.XLSX?.SSF) {
     const parsed = XLSX.SSF.parse_date_code(value);
-    if (parsed) return `${parsed.y}-${String(parsed.m).padStart(2, '0')}-${String(parsed.d).padStart(2, '0')}`;
+    if (parsed) return parsed.y + '-' + String(parsed.m).padStart(2, '0') + '-' + String(parsed.d).padStart(2, '0');
   }
   const text = String(value || '').trim();
   if (!text) return '';
   if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(text)) {
     const [y, m, d] = text.split('-');
-    return `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
+    return y + '-' + m.padStart(2, '0') + '-' + d.padStart(2, '0');
   }
   const parsed = new Date(text);
-  return Number.isNaN(parsed.getTime()) ? text : parsed.toISOString().slice(0, 10);
+  if (Number.isNaN(parsed.getTime())) return text;
+  return [
+    parsed.getFullYear(),
+    String(parsed.getMonth() + 1).padStart(2, '0'),
+    String(parsed.getDate()).padStart(2, '0')
+  ].join('-');
 }
 
 function rowToCertificate(row) {
