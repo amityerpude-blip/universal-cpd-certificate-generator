@@ -315,8 +315,10 @@ function rowToCertificate(row) {
     hpost: cell(row, 'hpost', ['पदनाम (विषय) हिंदी में', 'Designation Hindi']),
     training: cell(row, 'training', ['Topic of training in English', 'Training', 'Training Topic']),
     htraining: cell(row, 'htraining', ['कार्यशाला का विषय', 'Training Hindi', 'Training Topic Hindi']),
-    fromdate: excelDateToISO(cell(row, 'fromdate', ['From date', 'From Date'])),
-    todate: excelDateToISO(cell(row, 'todate', ['To date', 'To Date'])),
+    // Pass the original Excel date value directly. Converting it to String first
+    // can apply timezone parsing and shift the displayed date by one day.
+    fromdate: excelDateToISO(row[Object.keys(row).find((header) => ['fromdate', 'from date'].includes(normaliseHeader(header))) ?? 'fromdate']),
+    todate: excelDateToISO(row[Object.keys(row).find((header) => ['todate', 'to date'].includes(normaliseHeader(header))) ?? 'todate']),
     venue: cell(row, 'venue', ['Venue / Event Location (English)', 'Venue', 'Event Location']),
     hvenue: cell(row, 'hvenue', ['आयोजन स्थल (हिंदी)', 'Venue Hindi', 'Event Location Hindi']),
     role: cell(row, 'role', ['Attended as', 'Role']) || 'Participant',
