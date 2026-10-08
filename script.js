@@ -4,8 +4,7 @@ const fields = {
   schoolName: $('schoolName'), hschoolName: $('hschoolName'),
   regionalOffice: $('regionalOffice'), hregionalOffice: $('hregionalOffice'),
   name: $('name'), hname: $('hname'), post: $('post'), hpost: $('hpost'),
-  training: $('training'), htraining: $('htraining'), fromdate: $('fromdate'),
-  todate: $('todate'), venue: $('venue'), hvenue: $('hvenue'),
+  training: $('training'), htraining: $('htraining'), fromdate: $('fromdate'), venue: $('venue'), hvenue: $('hvenue'),
   hours: $('hours'), year: $('year')
 };
 
@@ -54,9 +53,7 @@ function updatePreview() {
   setText('outTraining', fields.training.value, '[Training / Workshop]');
   setText('outHTraining', fields.htraining.value, '[कार्यशाला का विषय]');
   setText('outFrom', formatDate(fields.fromdate.value), '[Date]');
-  setText('outTo', formatDate(fields.todate.value), '[Date]');
   setText('outHFrom', formatDate(fields.fromdate.value), '[Date]');
-  setText('outHTo', formatDate(fields.todate.value), '[Date]');
   setText('outVenue', fields.venue.value, '[Venue / Event Location]');
   setText('outHVenue', fields.hvenue.value, '[आयोजन स्थल]');
   setText('outHours', hours, '[Hours]');
@@ -73,7 +70,7 @@ function updatePreview() {
 function validate() {
   const required = [
     'schoolName', 'hschoolName', 'name', 'hname', 'post', 'hpost',
-    'training', 'htraining', 'fromdate', 'todate', 'venue', 'hvenue', 'hours'
+    'training', 'htraining', 'fromdate', 'venue', 'hvenue', 'hours'
   ];
   for (const key of required) {
     if (!fields[key].value.trim()) {
@@ -85,11 +82,6 @@ function validate() {
   if (Number(fields.hours.value) <= 0) {
     fields.hours.focus();
     $('validationMessage').textContent = 'Training hours must be greater than 0.';
-    return false;
-  }
-  if (fields.fromdate.value > fields.todate.value) {
-    fields.fromdate.focus();
-    $('validationMessage').textContent = 'From date cannot be later than To date.';
     return false;
   }
   if (signatureMode() === 'with' && !signatureDataUrl) {
@@ -318,7 +310,6 @@ function rowToCertificate(row) {
     // Pass the original Excel date value directly. Converting it to String first
     // can apply timezone parsing and shift the displayed date by one day.
     fromdate: excelDateToISO(row[Object.keys(row).find((header) => ['fromdate', 'from date'].includes(normaliseHeader(header))) ?? 'fromdate']),
-    todate: excelDateToISO(row[Object.keys(row).find((header) => ['todate', 'to date'].includes(normaliseHeader(header))) ?? 'todate']),
     venue: cell(row, 'venue', ['Venue / Event Location (English)', 'Venue', 'Event Location']),
     hvenue: cell(row, 'hvenue', ['आयोजन स्थल (हिंदी)', 'Venue Hindi', 'Event Location Hindi']),
     role: cell(row, 'role', ['Attended as', 'Role']) || 'Participant',
@@ -340,7 +331,7 @@ function applyBulkRow(data) {
 }
 
 function validateBulkRow(data, index) {
-  const required = ['schoolName', 'hschoolName', 'name', 'hname', 'post', 'hpost', 'training', 'htraining', 'fromdate', 'todate', 'venue', 'hvenue', 'hours'];
+  const required = ['schoolName', 'hschoolName', 'name', 'hname', 'post', 'hpost', 'training', 'htraining', 'fromdate', 'venue', 'hvenue', 'hours'];
   const missing = required.filter((key) => !String(data[key] || '').trim());
   if (missing.length) return `Row ${index + 2}: missing ${missing.join(', ')}`;
   if (Number(data.hours) <= 0) return `Row ${index + 2}: training hours must be greater than 0`;
@@ -416,12 +407,12 @@ $('bulkExcelUpload').addEventListener('change', async (event) => {
 });
 
 $('downloadTemplateBtn').addEventListener('click', () => {
-  const headers = ['schoolName','hschoolName','regionalOffice','hregionalOffice','name','hname','post','hpost','training','htraining','fromdate','todate','venue','hvenue','role','hrole','hours','year'];
+  const headers = ['schoolName','hschoolName','regionalOffice','hregionalOffice','name','hname','post','hpost','training','htraining','fromdate','venue','hvenue','role','hrole','hours','year'];
   const sample = {
     schoolName: 'PM SHRI Kendriya Vidyalaya Dongargarh', hschoolName: 'पीएम श्री केंद्रीय विद्यालय डोंगरगढ़',
     regionalOffice: 'Raipur', hregionalOffice: 'रायपुर', name: 'Amit Yerpude', hname: 'अमित येरपुडे',
     post: 'PGT Computer Science', hpost: 'पीजीटी कंप्यूटर साइंस', training: 'Competency Based Assessment', htraining: 'क्षमता आधारित मूल्यांकन',
-    fromdate: '2026-09-01', todate: '2026-09-02', venue: 'PM SHRI KV Dongargarh', hvenue: 'पीएम श्री केन्द्रीय विद्यालय डोंगरगढ़',
+    fromdate: '2026-09-01', venue: 'PM SHRI KV Dongargarh', hvenue: 'पीएम श्री केन्द्रीय विद्यालय डोंगरगढ़',
     role: 'Participant', hrole: 'प्रतिभागी', hours: 6, year: 2026
   };
   const worksheet = XLSX.utils.json_to_sheet([sample], { header: headers });
