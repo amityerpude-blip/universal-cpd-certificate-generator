@@ -12,7 +12,6 @@ function formatDate(value) {
   if (!value) return '[Date]';
   const text = String(value).trim();
   if (!text) return '[Date]';
-  // Display the certificate date consistently as DD/MM/YYYY in both languages.
   const match = text.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
   if (match) return match[3].padStart(2, '0') + '/' + match[2].padStart(2, '0') + '/' + match[1];
   const date = new Date(text + 'T00:00:00');
@@ -48,7 +47,6 @@ function updatePreview() {
   setText('outSchoolName', schoolEn, '[School / Institution Name]');
   setText('outRegionalOffice', fields.regionalOffice.value.trim() ? `Regional Office: ${fields.regionalOffice.value.trim()}` : 'Regional Office: [Regional Office]', 'Regional Office: [Regional Office]');
   setText('outHParticipantSchool', participantSchoolHi, '[प्रतिभागी का विद्यालय]');
-  // Participant school is intentionally separate from the institution/header school.
   setText('outParticipantSchoolEn', participantSchoolEn, '[Participant School Name]');
   setText('outHRegionalOffice', officeHi, '[क्षेत्रीय कार्यालय]');
   setText('outRegionalOfficeEn', officeEn, '[Regional Office]');
@@ -133,14 +131,11 @@ async function normalizeSignatureImage(file) {
       const green = pixels[index + 1];
       const blue = pixels[index + 2];
       const alpha = pixels[index + 3];
-      const brightness = (red + green + blue) / 3;
       const isWhiteBackground = alpha === 0 || (red >= 245 && green >= 245 && blue >= 245);
 
       if (isWhiteBackground) {
         pixels[index + 3] = 0;
       } else {
-        // Keep the original alpha fully intact so the uploaded signature does
-        // not become faint. Only remove the white paper/background.
         pixels[index + 3] = alpha;
         minX = Math.min(minX, x);
         minY = Math.min(minY, y);
@@ -170,11 +165,7 @@ async function normalizeSignatureImage(file) {
   outputCanvas.height = Math.max(1, Math.round(cropHeight * scale));
   const outputContext = outputCanvas.getContext('2d');
   outputContext.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
-  outputContext.drawImage(
-    sourceCanvas,
-    minX, minY, cropWidth, cropHeight,
-    0, 0, outputCanvas.width, outputCanvas.height
-  );
+  outputContext.drawImage(sourceCanvas, minX, minY, cropWidth, cropHeight, 0, 0, outputCanvas.width, outputCanvas.height);
 
   return outputCanvas.toDataURL('image/png');
 }
@@ -273,14 +264,8 @@ function cell(row, key, aliases = []) {
 }
 
 function excelDateToISO(value) {
-  // Keep the Excel calendar date in local time. Using toISOString() can
-  // shift midnight to the previous day in time zones such as India (UTC+5:30).
   if (value instanceof Date && !Number.isNaN(value.getTime())) {
-    return [
-      value.getFullYear(),
-      String(value.getMonth() + 1).padStart(2, '0'),
-      String(value.getDate()).padStart(2, '0')
-    ].join('-');
+    return [value.getFullYear(), String(value.getMonth() + 1).padStart(2, '0'), String(value.getDate()).padStart(2, '0')].join('-');
   }
   if (typeof value === 'number' && window.XLSX?.SSF) {
     const parsed = XLSX.SSF.parse_date_code(value);
@@ -294,11 +279,7 @@ function excelDateToISO(value) {
   }
   const parsed = new Date(text);
   if (Number.isNaN(parsed.getTime())) return text;
-  return [
-    parsed.getFullYear(),
-    String(parsed.getMonth() + 1).padStart(2, '0'),
-    String(parsed.getDate()).padStart(2, '0')
-  ].join('-');
+  return [parsed.getFullYear(), String(parsed.getMonth() + 1).padStart(2, '0'), String(parsed.getDate()).padStart(2, '0')].join('-');
 }
 
 function rowToCertificate(row) {
@@ -315,8 +296,6 @@ function rowToCertificate(row) {
     hparticipantSchool: cell(row, 'hparticipantSchool', ['प्रतिभागी के विद्यालय का नाम (हिंदी)', 'Participant School Name Hindi', 'Participant School Hindi', 'Teacher School Name Hindi']),
     training: cell(row, 'training', ['Topic of training in English', 'Training', 'Training Topic']),
     htraining: cell(row, 'htraining', ['कार्यशाला का विषय', 'Training Hindi', 'Training Topic Hindi']),
-    // Pass the original Excel date value directly. Converting it to String first
-    // can apply timezone parsing and shift the displayed date by one day.
     fromdate: excelDateToISO(row[Object.keys(row).find((header) => ['fromdate', 'from date'].includes(normaliseHeader(header))) ?? 'fromdate']),
     venue: cell(row, 'venue', ['Venue / Event Location (English)', 'Venue', 'Event Location']),
     hvenue: cell(row, 'hvenue', ['आयोजन स्थल (हिंदी)', 'Venue Hindi', 'Event Location Hindi']),
@@ -339,11 +318,10 @@ function applyBulkRow(data) {
 }
 
 function validateBulkRow(data, index) {
-  const required = ['schoolName', 'hschoolName', 'name', 'hname', 'post', 'hpost', 'training', 'htraining', 'fromdate', 'venue', 'hvenue', 'hours'];
+  const required = ['schoolName', 'hschoolName', 'name', 'hname', 'post', 'hpost', 'participantSchool', 'hparticipantSchool', 'training', 'htraining', 'fromdate', 'venue', 'hvenue', 'hours'];
   const missing = required.filter((key) => !String(data[key] || '').trim());
   if (missing.length) return `Row ${index + 2}: missing ${missing.join(', ')}`;
   if (Number(data.hours) <= 0) return `Row ${index + 2}: training hours must be greater than 0`;
-  if (data.fromdate > data.todate) return `Row ${index + 2}: From date cannot be later than To date`;
   return '';
 }
 
@@ -351,7 +329,6 @@ async function generateBulkCertificates(rows) {
   const zip = new JSZip();
   const errors = [];
   const total = rows.length;
-  const mode = signatureMode();
   const original = {};
   Object.keys(fields).forEach((key) => { original[key] = fields[key].value; });
   const originalRole = document.querySelector('input[name="role"]:checked')?.value || 'Participant';
