@@ -12,9 +12,12 @@ function formatDate(value) {
   if (!value) return '[Date]';
   const text = String(value).trim();
   if (!text) return '[Date]';
-  const date = new Date(`${text}T00:00:00`);
+  // Display the certificate date consistently as DD/MM/YYYY in both languages.
+  const match = text.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if (match) return match[3].padStart(2, '0') + '/' + match[2].padStart(2, '0') + '/' + match[1];
+  const date = new Date(text + 'T00:00:00');
   if (Number.isNaN(date.getTime())) return text;
-  return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+  return [String(date.getDate()).padStart(2, '0'), String(date.getMonth() + 1).padStart(2, '0'), date.getFullYear()].join('/');
 }
 
 let signatureDataUrl = '';
