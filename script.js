@@ -39,8 +39,8 @@ function applySignatureVisibility() {
 function updatePreview() {
   const schoolEn = fields.schoolName.value.trim() || '[School / Institution Name]';
   const schoolHi = fields.hschoolName.value.trim() || '[विद्यालय / संस्था का नाम]';
-  const participantSchoolEn = fields.participantSchool.value.trim() || '[Participant School Name]';
-  const participantSchoolHi = fields.hparticipantSchool.value.trim() || '[प्रतिभागी का विद्यालय]';
+  const participantSchoolEn = fields.participantSchool?.value?.trim() || '[Participant School Name]';
+  const participantSchoolHi = fields.hparticipantSchool?.value?.trim() || '[प्रतिभागी का विद्यालय]';
   const officeEn = fields.regionalOffice.value.trim() || '[Regional Office]';
   const officeHi = fields.hregionalOffice.value.trim() || '[क्षेत्रीय कार्यालय]';
   const hours = fields.hours.value || '[Hours]';
@@ -48,8 +48,9 @@ function updatePreview() {
   setText('outSchoolName', schoolEn, '[School / Institution Name]');
   setText('outRegionalOffice', fields.regionalOffice.value.trim() ? `Regional Office: ${fields.regionalOffice.value.trim()}` : 'Regional Office: [Regional Office]', 'Regional Office: [Regional Office]');
   setText('outHParticipantSchool', participantSchoolHi, '[प्रतिभागी का विद्यालय]');
-  setText('outHRegionalOffice', officeHi, '[क्षेत्रीय कार्यालय]');
+  // Participant school is intentionally separate from the institution/header school.
   setText('outParticipantSchoolEn', participantSchoolEn, '[Participant School Name]');
+  setText('outHRegionalOffice', officeHi, '[क्षेत्रीय कार्यालय]');
   setText('outRegionalOfficeEn', officeEn, '[Regional Office]');
   setText('outName', fields.name.value, '[Name]');
   setText('outHName', fields.hname.value, '[नाम]');
