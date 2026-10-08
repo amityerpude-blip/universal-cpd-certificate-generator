@@ -3,7 +3,7 @@ const $ = (id) => document.getElementById(id);
 const fields = {
   schoolName: $('schoolName'), hschoolName: $('hschoolName'),
   regionalOffice: $('regionalOffice'), hregionalOffice: $('hregionalOffice'),
-  name: $('name'), hname: $('hname'), post: $('post'), hpost: $('hpost'),
+  name: $('name'), hname: $('hname'), post: $('post'), hpost: $('hpost'), participantSchool: $('participantSchool'), hparticipantSchool: $('hparticipantSchool'),
   training: $('training'), htraining: $('htraining'), fromdate: $('fromdate'), venue: $('venue'), hvenue: $('hvenue'),
   hours: $('hours'), year: $('year')
 };
@@ -39,15 +39,17 @@ function applySignatureVisibility() {
 function updatePreview() {
   const schoolEn = fields.schoolName.value.trim() || '[School / Institution Name]';
   const schoolHi = fields.hschoolName.value.trim() || '[विद्यालय / संस्था का नाम]';
+  const participantSchoolEn = fields.participantSchool.value.trim() || '[Participant School Name]';
+  const participantSchoolHi = fields.hparticipantSchool.value.trim() || '[प्रतिभागी का विद्यालय]';
   const officeEn = fields.regionalOffice.value.trim() || '[Regional Office]';
   const officeHi = fields.hregionalOffice.value.trim() || '[क्षेत्रीय कार्यालय]';
   const hours = fields.hours.value || '[Hours]';
 
   setText('outSchoolName', schoolEn, '[School / Institution Name]');
   setText('outRegionalOffice', fields.regionalOffice.value.trim() ? `Regional Office: ${fields.regionalOffice.value.trim()}` : 'Regional Office: [Regional Office]', 'Regional Office: [Regional Office]');
-  setText('outHSchoolName', schoolHi, '[विद्यालय / संस्था का नाम]');
+  setText('outHParticipantSchool', participantSchoolHi, '[प्रतिभागी का विद्यालय]');
   setText('outHRegionalOffice', officeHi, '[क्षेत्रीय कार्यालय]');
-  setText('outSchoolNameEn', schoolEn, '[School / Institution Name]');
+  setText('outParticipantSchoolEn', participantSchoolEn, '[Participant School Name]');
   setText('outRegionalOfficeEn', officeEn, '[Regional Office]');
   setText('outName', fields.name.value, '[Name]');
   setText('outHName', fields.hname.value, '[नाम]');
@@ -72,7 +74,7 @@ function updatePreview() {
 
 function validate() {
   const required = [
-    'schoolName', 'hschoolName', 'name', 'hname', 'post', 'hpost',
+    'schoolName', 'hschoolName', 'name', 'hname', 'post', 'hpost', 'participantSchool', 'hparticipantSchool',
     'training', 'htraining', 'fromdate', 'venue', 'hvenue', 'hours'
   ];
   for (const key of required) {
@@ -308,6 +310,8 @@ function rowToCertificate(row) {
     hname: cell(row, 'hname', ['नाम हिंदी में', 'Name Hindi']),
     post: cell(row, 'post', ['Post / Designation in English', 'Designation', 'Post']),
     hpost: cell(row, 'hpost', ['पदनाम (विषय) हिंदी में', 'Designation Hindi']),
+    participantSchool: cell(row, 'participantSchool', ['Participant School Name (English)', 'Participant School', 'Teacher School Name', 'School Name for Participant']),
+    hparticipantSchool: cell(row, 'hparticipantSchool', ['प्रतिभागी के विद्यालय का नाम (हिंदी)', 'Participant School Name Hindi', 'Participant School Hindi', 'Teacher School Name Hindi']),
     training: cell(row, 'training', ['Topic of training in English', 'Training', 'Training Topic']),
     htraining: cell(row, 'htraining', ['कार्यशाला का विषय', 'Training Hindi', 'Training Topic Hindi']),
     // Pass the original Excel date value directly. Converting it to String first
@@ -410,11 +414,11 @@ $('bulkExcelUpload').addEventListener('change', async (event) => {
 });
 
 $('downloadTemplateBtn').addEventListener('click', () => {
-  const headers = ['schoolName','hschoolName','regionalOffice','hregionalOffice','name','hname','post','hpost','training','htraining','fromdate','venue','hvenue','role','hrole','hours','year'];
+  const headers = ['schoolName','hschoolName','regionalOffice','hregionalOffice','name','hname','post','hpost','participantSchool','hparticipantSchool','training','htraining','fromdate','venue','hvenue','role','hrole','hours','year'];
   const sample = {
     schoolName: 'PM SHRI Kendriya Vidyalaya Dongargarh', hschoolName: 'पीएम श्री केंद्रीय विद्यालय डोंगरगढ़',
     regionalOffice: 'Raipur', hregionalOffice: 'रायपुर', name: 'Amit Yerpude', hname: 'अमित येरपुडे',
-    post: 'PGT Computer Science', hpost: 'पीजीटी कंप्यूटर साइंस', training: 'Competency Based Assessment', htraining: 'क्षमता आधारित मूल्यांकन',
+    post: 'PGT Computer Science', hpost: 'पीजीटी कंप्यूटर साइंस', participantSchool: 'PM SHRI Kendriya Vidyalaya Dongargarh', hparticipantSchool: 'पीएम श्री केंद्रीय विद्यालय डोंगरगढ़', training: 'Competency Based Assessment', htraining: 'क्षमता आधारित मूल्यांकन',
     fromdate: '2026-09-01', venue: 'PM SHRI KV Dongargarh', hvenue: 'पीएम श्री केन्द्रीय विद्यालय डोंगरगढ़',
     role: 'Participant', hrole: 'प्रतिभागी', hours: 6, year: 2026
   };
