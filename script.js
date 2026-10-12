@@ -91,6 +91,17 @@ function validate() {
       return false;
     }
   }
+  const duration = document.querySelector('input[name="workshopDuration"]:checked')?.value || 'one-day';
+  if (duration === 'multi-day' && !fields.todate.value) {
+    fields.todate.focus();
+    $('validationMessage').textContent = 'Please enter the end date for a multi-day workshop.';
+    return false;
+  }
+  if (fields.todate.value && fields.fromdate.value > fields.todate.value) {
+    fields.todate.focus();
+    $('validationMessage').textContent = 'End date cannot be earlier than start date.';
+    return false;
+  }
   if (Number(fields.hours.value) <= 0) {
     fields.hours.focus();
     $('validationMessage').textContent = 'Training hours must be greater than 0.';
@@ -332,6 +343,7 @@ function applyBulkRow(data) {
 function validateBulkRow(data, index) {
   const required = ['schoolName', 'hschoolName', 'name', 'hname', 'post', 'hpost', 'participantSchool', 'hparticipantSchool', 'training', 'htraining', 'fromdate', 'venue', 'hvenue', 'hours'];
   const missing = required.filter((key) => !String(data[key] || '').trim());
+  if ((data.workshopDuration || 'one-day') === 'multi-day' && !String(data.todate || '').trim()) return `Row ${index + 2}: end date is required for a multi-day workshop`;
   if (missing.length) return `Row ${index + 2}: missing ${missing.join(', ')}`;
   if (Number(data.hours) <= 0) return `Row ${index + 2}: training hours must be greater than 0`;
   if ((data.workshopDuration || 'one-day') === 'multi-day' && !String(data.todate || '').trim()) return `Row ${index + 2}: end date is required for a multi-day workshop`;
