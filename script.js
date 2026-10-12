@@ -44,6 +44,9 @@ function updatePreview() {
   const officeHi = fields.hregionalOffice.value.trim() || '[क्षेत्रीय कार्यालय]';
   const hours = fields.hours.value || '[Hours]';
   const duration = document.querySelector('input[name="workshopDuration"]:checked')?.value || 'one-day';
+  const institutionType = document.querySelector('input[name="institutionType"]:checked')?.value || 'pmshri';
+  const pmshriLogo = $('certPmshriLogo');
+  if (pmshriLogo) pmshriLogo.style.display = institutionType === 'pmshri' ? '' : 'none';
   const startDate = formatDate(fields.fromdate.value);
   const endDate = formatDate(fields.todate?.value);
   const multiDay = duration === 'multi-day';
@@ -314,6 +317,7 @@ function excelDateToISO(value) {
 
 function rowToCertificate(row) {
   return {
+    institutionType: cell(row, 'institutionType', ['Institution Category', 'School Type']) || 'pmshri',
     schoolName: cell(row, 'schoolName', ['School / Institution Name (English)', 'School Name English']),
     hschoolName: cell(row, 'hschoolName', ['विद्यालय / संस्था का नाम (हिंदी)', 'School Name Hindi']),
     regionalOffice: cell(row, 'regionalOffice', ['Regional Office (English)', 'Regional Office']),
@@ -342,6 +346,8 @@ function applyBulkRow(data) {
   Object.keys(fields).forEach((key) => {
     if (data[key] !== undefined && fields[key]) fields[key].value = data[key];
   });
+  const institutionType = document.querySelector(`input[name="institutionType"][value="${CSS.escape(data.institutionType || 'pmshri')}"]`) || document.querySelector('input[name="institutionType"][value="pmshri"]');
+  document.querySelectorAll('input[name="institutionType"]').forEach((r) => { r.checked = r === institutionType; });
   const role = document.querySelector(`input[name="role"][value="${CSS.escape(data.role)}"]`) || document.querySelector('input[name="role"][value="Participant"]');
   const hrole = document.querySelector(`input[name="hrole"][value="${CSS.escape(data.hrole)}"]`) || document.querySelector('input[name="hrole"][value="प्रतिभागी"]');
   const duration = document.querySelector(`input[name="workshopDuration"][value="${CSS.escape(data.workshopDuration || 'one-day')}"]`) || document.querySelector('input[name="workshopDuration"][value="one-day"]');
@@ -371,6 +377,7 @@ async function generateBulkCertificates(rows) {
   const originalRole = document.querySelector('input[name="role"]:checked')?.value || 'Participant';
   const originalHRole = document.querySelector('input[name="hrole"]:checked')?.value || 'प्रतिभागी';
   const originalDuration = document.querySelector('input[name="workshopDuration"]:checked')?.value || 'one-day';
+  const originalInstitutionType = document.querySelector('input[name="institutionType"]:checked')?.value || 'pmshri';
 
   for (let i = 0; i < total; i += 1) {
     const data = rowToCertificate(rows[i]);
@@ -392,6 +399,7 @@ async function generateBulkCertificates(rows) {
   document.querySelectorAll('input[name="role"]').forEach((r) => { r.checked = r.value === originalRole; });
   document.querySelectorAll('input[name="hrole"]').forEach((r) => { r.checked = r.value === originalHRole; });
   document.querySelectorAll('input[name="workshopDuration"]').forEach((r) => { r.checked = r.value === originalDuration; });
+  document.querySelectorAll('input[name="institutionType"]').forEach((r) => { r.checked = r.value === originalInstitutionType; });
   updatePreview();
 
   if (Object.keys(zip.files).length) {
@@ -431,9 +439,9 @@ $('bulkExcelUpload').addEventListener('change', async (event) => {
 });
 
 $('downloadTemplateBtn').addEventListener('click', () => {
-  const headers = ['schoolName','hschoolName','regionalOffice','hregionalOffice','name','hname','post','hpost','participantSchool','hparticipantSchool','training','htraining','workshopDuration','fromdate','todate','venue','hvenue','role','hrole','hours','year'];
+  const headers = ['institutionType','schoolName','hschoolName','regionalOffice','hregionalOffice','name','hname','post','hpost','participantSchool','hparticipantSchool','training','htraining','workshopDuration','fromdate','todate','venue','hvenue','role','hrole','hours','year'];
   const sample = {
-    schoolName: 'PM SHRI Kendriya Vidyalaya Dongargarh', hschoolName: 'पीएम श्री केंद्रीय विद्यालय डोंगरगढ़',
+    institutionType: 'pmshri', schoolName: 'PM SHRI Kendriya Vidyalaya Dongargarh', hschoolName: 'पीएम श्री केंद्रीय विद्यालय डोंगरगढ़',
     regionalOffice: 'Raipur', hregionalOffice: 'रायपुर', name: 'Amit Yerpude', hname: 'अमित येरपुडे',
     post: 'PGT Computer Science', hpost: 'पीजीटी कंप्यूटर साइंस', participantSchool: 'PM SHRI Kendriya Vidyalaya Dongargarh', hparticipantSchool: 'पीएम श्री केंद्रीय विद्यालय डोंगरगढ़', training: 'Competency Based Assessment', htraining: 'क्षमता आधारित मूल्यांकन',
     workshopDuration: 'one-day', fromdate: '2026-09-01', todate: '', venue: 'PM SHRI KV Dongargarh', hvenue: 'पीएम श्री केन्द्रीय विद्यालय डोंगरगढ़',
@@ -450,7 +458,7 @@ Object.values(fields).forEach((field) => {
   field.addEventListener('input', updatePreview);
   field.addEventListener('change', updatePreview);
 });
-document.querySelectorAll('input[name="workshopDuration"]').forEach((radio) => radio.addEventListener('change', updatePreview));
+document.querySelectorAll('input[name="workshopDuration"], input[name="institutionType"]').forEach((radio) => radio.addEventListener('change', updatePreview));
 document.querySelectorAll('input[name="role"], input[name="hrole"]').forEach((radio) => {
   radio.addEventListener('change', updatePreview);
 });
@@ -465,6 +473,7 @@ $('resetBtn').addEventListener('click', () => {
   document.querySelector('input[name="role"][value="Participant"]').checked = true;
   document.querySelector('input[name="hrole"][value="प्रतिभागी"]').checked = true;
   document.querySelector('input[name="workshopDuration"][value="one-day"]').checked = true;
+  document.querySelector('input[name="institutionType"][value="pmshri"]').checked = true;
   if (fields.todate) fields.todate.value = '';
   document.querySelector('input[name="signatureMode"][value="with"]').checked = true;
   $('signatureUpload').value = '';
