@@ -5,7 +5,7 @@ const fields = {
   regionalOffice: $('regionalOffice'), hregionalOffice: $('hregionalOffice'),
   name: $('name'), hname: $('hname'), post: $('post'), hpost: $('hpost'), participantSchool: $('participantSchool'), hparticipantSchool: $('hparticipantSchool'),
   training: $('training'), htraining: $('htraining'), fromdate: $('fromdate'), venue: $('venue'), hvenue: $('hvenue'),
-  hours: $('hours'), year: $('year')
+  hours: $('hours'), year: $('year'), todate: $('todate')
 };
 
 function formatDate(value) {
@@ -43,6 +43,14 @@ function updatePreview() {
   const officeEn = fields.regionalOffice.value.trim() || '[Regional Office]';
   const officeHi = fields.hregionalOffice.value.trim() || '[क्षेत्रीय कार्यालय]';
   const hours = fields.hours.value || '[Hours]';
+  const duration = document.querySelector('input[name="workshopDuration"]:checked')?.value || 'one-day';
+  const startDate = formatDate(fields.fromdate.value);
+  const endDate = formatDate(fields.todate?.value);
+  const dateText = duration === 'multi-day' && fields.todate?.value ? startDate + ' से ' + endDate : startDate;
+  const dateTextEn = duration === 'multi-day' && fields.todate?.value ? startDate + ' to ' + endDate : startDate;
+  const endDateField = $('endDateField');
+  if (endDateField) endDateField.style.display = duration === 'multi-day' ? '' : 'none';
+  if (fields.todate) fields.todate.required = duration === 'multi-day';
 
   setText('outSchoolName', schoolEn, '[School / Institution Name]');
   setText('outRegionalOffice', fields.regionalOffice.value.trim() ? `Regional Office: ${fields.regionalOffice.value.trim()}` : 'Regional Office: [Regional Office]', 'Regional Office: [Regional Office]');
@@ -56,8 +64,8 @@ function updatePreview() {
   setText('outHPost', fields.hpost.value, '[पदनाम]');
   setText('outTraining', fields.training.value, '[Training / Workshop]');
   setText('outHTraining', fields.htraining.value, '[कार्यशाला का विषय]');
-  setText('outFrom', formatDate(fields.fromdate.value), '[Date]');
-  setText('outHFrom', formatDate(fields.fromdate.value), '[Date]');
+  setText('outFrom', dateTextEn, '[Date]');
+  setText('outHFrom', dateText, '[दिनांक]');
   setText('outVenue', fields.venue.value, '[Venue / Event Location]');
   setText('outHVenue', fields.hvenue.value, '[आयोजन स्थल]');
   setText('outHours', hours, '[Hours]');
@@ -296,7 +304,9 @@ function rowToCertificate(row) {
     hparticipantSchool: cell(row, 'hparticipantSchool', ['प्रतिभागी के विद्यालय का नाम (हिंदी)', 'Participant School Name Hindi', 'Participant School Hindi', 'Teacher School Name Hindi']),
     training: cell(row, 'training', ['Topic of training in English', 'Training', 'Training Topic']),
     htraining: cell(row, 'htraining', ['कार्यशाला का विषय', 'Training Hindi', 'Training Topic Hindi']),
-    fromdate: excelDateToISO(row[Object.keys(row).find((header) => ['fromdate', 'from date'].includes(normaliseHeader(header))) ?? 'fromdate']),
+    fromdate: excelDateToISO(row[Object.keys(row).find((header) => ['fromdate', 'from date', 'startdate', 'start date'].includes(normaliseHeader(header))) ?? 'fromdate']),
+    todate: excelDateToISO(row[Object.keys(row).find((header) => ['todate', 'to date', 'enddate', 'end date'].includes(normaliseHeader(header))) ?? 'todate']),
+    workshopDuration: cell(row, 'workshopDuration', ['Workshop Duration', 'Duration']) || (cell(row, 'todate', ['To Date', 'End Date']) ? 'multi-day' : 'one-day'),
     venue: cell(row, 'venue', ['Venue / Event Location (English)', 'Venue', 'Event Location']),
     hvenue: cell(row, 'hvenue', ['आयोजन स्थल (हिंदी)', 'Venue Hindi', 'Event Location Hindi']),
     role: cell(row, 'role', ['Attended as', 'Role']) || 'Participant',
@@ -312,6 +322,8 @@ function applyBulkRow(data) {
   });
   const role = document.querySelector(`input[name="role"][value="${CSS.escape(data.role)}"]`) || document.querySelector('input[name="role"][value="Participant"]');
   const hrole = document.querySelector(`input[name="hrole"][value="${CSS.escape(data.hrole)}"]`) || document.querySelector('input[name="hrole"][value="प्रतिभागी"]');
+  const duration = document.querySelector(`input[name="workshopDuration"][value="${CSS.escape(data.workshopDuration || 'one-day')}"]`) || document.querySelector('input[name="workshopDuration"][value="one-day"]');
+  document.querySelectorAll('input[name="workshopDuration"]').forEach((r) => { r.checked = r === duration; });
   document.querySelectorAll('input[name="role"]').forEach((r) => { r.checked = r === role; });
   document.querySelectorAll('input[name="hrole"]').forEach((r) => { r.checked = r === hrole; });
   updatePreview();
@@ -322,6 +334,8 @@ function validateBulkRow(data, index) {
   const missing = required.filter((key) => !String(data[key] || '').trim());
   if (missing.length) return `Row ${index + 2}: missing ${missing.join(', ')}`;
   if (Number(data.hours) <= 0) return `Row ${index + 2}: training hours must be greater than 0`;
+  if ((data.workshopDuration || 'one-day') === 'multi-day' && !String(data.todate || '').trim()) return `Row ${index + 2}: end date is required for a multi-day workshop`;
+  if (data.todate && data.fromdate > data.todate) return `Row ${index + 2}: end date cannot be earlier than start date`;
   return '';
 }
 
@@ -333,6 +347,7 @@ async function generateBulkCertificates(rows) {
   Object.keys(fields).forEach((key) => { original[key] = fields[key].value; });
   const originalRole = document.querySelector('input[name="role"]:checked')?.value || 'Participant';
   const originalHRole = document.querySelector('input[name="hrole"]:checked')?.value || 'प्रतिभागी';
+  const originalDuration = document.querySelector('input[name="workshopDuration"]:checked')?.value || 'one-day';
 
   for (let i = 0; i < total; i += 1) {
     const data = rowToCertificate(rows[i]);
@@ -353,6 +368,7 @@ async function generateBulkCertificates(rows) {
   Object.keys(fields).forEach((key) => { fields[key].value = original[key]; });
   document.querySelectorAll('input[name="role"]').forEach((r) => { r.checked = r.value === originalRole; });
   document.querySelectorAll('input[name="hrole"]').forEach((r) => { r.checked = r.value === originalHRole; });
+  document.querySelectorAll('input[name="workshopDuration"]').forEach((r) => { r.checked = r.value === originalDuration; });
   updatePreview();
 
   if (Object.keys(zip.files).length) {
@@ -392,12 +408,12 @@ $('bulkExcelUpload').addEventListener('change', async (event) => {
 });
 
 $('downloadTemplateBtn').addEventListener('click', () => {
-  const headers = ['schoolName','hschoolName','regionalOffice','hregionalOffice','name','hname','post','hpost','participantSchool','hparticipantSchool','training','htraining','fromdate','venue','hvenue','role','hrole','hours','year'];
+  const headers = ['schoolName','hschoolName','regionalOffice','hregionalOffice','name','hname','post','hpost','participantSchool','hparticipantSchool','training','htraining','workshopDuration','fromdate','todate','venue','hvenue','role','hrole','hours','year'];
   const sample = {
     schoolName: 'PM SHRI Kendriya Vidyalaya Dongargarh', hschoolName: 'पीएम श्री केंद्रीय विद्यालय डोंगरगढ़',
     regionalOffice: 'Raipur', hregionalOffice: 'रायपुर', name: 'Amit Yerpude', hname: 'अमित येरपुडे',
     post: 'PGT Computer Science', hpost: 'पीजीटी कंप्यूटर साइंस', participantSchool: 'PM SHRI Kendriya Vidyalaya Dongargarh', hparticipantSchool: 'पीएम श्री केंद्रीय विद्यालय डोंगरगढ़', training: 'Competency Based Assessment', htraining: 'क्षमता आधारित मूल्यांकन',
-    fromdate: '2026-09-01', venue: 'PM SHRI KV Dongargarh', hvenue: 'पीएम श्री केन्द्रीय विद्यालय डोंगरगढ़',
+    workshopDuration: 'one-day', fromdate: '2026-09-01', todate: '', venue: 'PM SHRI KV Dongargarh', hvenue: 'पीएम श्री केन्द्रीय विद्यालय डोंगरगढ़',
     role: 'Participant', hrole: 'प्रतिभागी', hours: 6, year: 2026
   };
   const worksheet = XLSX.utils.json_to_sheet([sample], { header: headers });
@@ -411,6 +427,7 @@ Object.values(fields).forEach((field) => {
   field.addEventListener('input', updatePreview);
   field.addEventListener('change', updatePreview);
 });
+document.querySelectorAll('input[name="workshopDuration"]').forEach((radio) => radio.addEventListener('change', updatePreview));
 document.querySelectorAll('input[name="role"], input[name="hrole"]').forEach((radio) => {
   radio.addEventListener('change', updatePreview);
 });
@@ -424,6 +441,8 @@ $('resetBtn').addEventListener('click', () => {
   $('year').value = new Date().getFullYear();
   document.querySelector('input[name="role"][value="Participant"]').checked = true;
   document.querySelector('input[name="hrole"][value="प्रतिभागी"]').checked = true;
+  document.querySelector('input[name="workshopDuration"][value="one-day"]').checked = true;
+  if (fields.todate) fields.todate.value = '';
   document.querySelector('input[name="signatureMode"][value="with"]').checked = true;
   $('signatureUpload').value = '';
   $('bulkExcelUpload').value = '';
