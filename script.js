@@ -317,7 +317,7 @@ function excelDateToISO(value) {
 
 function rowToCertificate(row) {
   return {
-    institutionType: cell(row, 'institutionType', ['Institution Category', 'School Type']) || 'pmshri',
+    institutionType: /non/i.test(cell(row, 'institutionType', ['Institution Category', 'School Type'])) ? 'non-pmshri' : 'pmshri',
     schoolName: cell(row, 'schoolName', ['School / Institution Name (English)', 'School Name English']),
     hschoolName: cell(row, 'hschoolName', ['विद्यालय / संस्था का नाम (हिंदी)', 'School Name Hindi']),
     regionalOffice: cell(row, 'regionalOffice', ['Regional Office (English)', 'Regional Office']),
