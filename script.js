@@ -46,11 +46,22 @@ function updatePreview() {
   const duration = document.querySelector('input[name="workshopDuration"]:checked')?.value || 'one-day';
   const startDate = formatDate(fields.fromdate.value);
   const endDate = formatDate(fields.todate?.value);
-  const dateText = duration === 'multi-day' && fields.todate?.value ? startDate + ' से ' + endDate : startDate;
-  const dateTextEn = duration === 'multi-day' && fields.todate?.value ? startDate + ' to ' + endDate : startDate;
+  const multiDay = duration === 'multi-day';
+  const dateText = startDate;
+  const dateTextEn = startDate;
   const endDateField = $('endDateField');
-  if (endDateField) endDateField.style.display = duration === 'multi-day' ? '' : 'none';
-  if (fields.todate) fields.todate.required = duration === 'multi-day';
+  if (endDateField) endDateField.style.display = multiDay ? '' : 'none';
+  if (fields.todate) fields.todate.required = multiDay;
+  const hToWrap = $('outHToWrap');
+  const enToWrap = $('outToWrap');
+  if (hToWrap) hToWrap.style.display = multiDay ? '' : 'none';
+  if (enToWrap) enToWrap.style.display = multiDay ? '' : 'none';
+  setText('outHTo', endDate, '[समाप्ति दिनांक]');
+  setText('outTo', endDate, '[End Date]');
+  setText('outHDatePhrase', multiDay ? 'दिनांक' : 'दिनांक', 'दिनांक');
+  setText('outHEventType', multiDay ? '(बहु-दिवसीय कार्यशाला)' : '(एक दिवसीय कार्यशाला)', '(एक दिवसीय कार्यशाला)');
+  setText('outEventType', multiDay ? '(multi-day workshop)' : '(one-day workshop)', '(one-day workshop)');
+
 
   setText('outSchoolName', schoolEn, '[School / Institution Name]');
   setText('outRegionalOffice', fields.regionalOffice.value.trim() ? `Regional Office: ${fields.regionalOffice.value.trim()}` : 'Regional Office: [Regional Office]', 'Regional Office: [Regional Office]');
