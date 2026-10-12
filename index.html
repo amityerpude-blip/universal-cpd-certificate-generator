@@ -28,7 +28,7 @@
           </div>
           <div class="section-label">Training / workshop</div><div class="field-grid two">
             <label class="field"><span>Topic of training in English <b>*</b></span><textarea id="training" required rows="2" placeholder="e.g. Competency Based Assessment"></textarea></label><label class="field hindi-field"><span>कार्यशाला का विषय <b>*</b></span><textarea id="htraining" required rows="2" placeholder="कार्यशाला का विषय"></textarea></label>
-            <label class="field"><span>Date <b>*</b></span><input id="fromdate" type="date" required /></label>
+            <fieldset class="choice-card"><legend>Workshop duration <b>*</b></legend><label class="radio"><input type="radio" name="workshopDuration" value="one-day" checked /><span>One-day workshop</span></label><label class="radio"><input type="radio" name="workshopDuration" value="multi-day" /><span>Multi-day workshop</span></label></fieldset><label class="field"><span>Start date <b>*</b></span><input id="fromdate" type="date" required /></label><label class="field" id="endDateField" style="display:none"><span>End date <b>*</b></span><input id="todate" type="date" /></label>
             <label class="field"><span>Venue / Event Location (English) <b>*</b></span><input id="venue" required placeholder="e.g. PM SHRI KV Dongargarh" /></label><label class="field hindi-field"><span>आयोजन स्थल (हिंदी) <b>*</b></span><input id="hvenue" required placeholder="उदा. पीएम श्री केन्द्रीय विद्यालय डोंगरगढ़" /></label>
           </div>
           <div class="section-label">Participation</div><div class="field-grid two">
@@ -53,7 +53,7 @@
     </div>
   </main>
   <footer class="footer"><span>Universal CPD Certificate Generator</span><span>Bilingual institution and venue fields • Bulk Excel generation</span></footer>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script><script src="script.js?v=20261008"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script><script src="script.js?v=20261012"></script>
   <script>
     // Keep the bilingual Principal label visible in both modes; only the signature image is optional.
     function applySignatureVisibility() {
