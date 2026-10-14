@@ -62,8 +62,8 @@ function updatePreview() {
   setText('outHTo', endDate, '[समाप्ति दिनांक]');
   setText('outTo', endDate, '[End Date]');
   setText('outHDatePhrase', multiDay ? 'दिनांक' : 'दिनांक', 'दिनांक');
-  setText('outHEventType', multiDay ? '(बहु-दिवसीय कार्यशाला)' : '(एक दिवसीय कार्यशाला)', '(एक दिवसीय कार्यशाला)');
-  setText('outEventType', multiDay ? '(multi-day workshop)' : '(one-day workshop)', '(one-day workshop)');
+  setText('outHEventType', '', '');
+  setText('outEventType', '', '');
 
 
   setText('outSchoolName', schoolEn, '[School / Institution Name]');
